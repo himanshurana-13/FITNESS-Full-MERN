@@ -94,7 +94,7 @@ const Input = styled.input`
     popup &&
     `
   color: ${theme.popup_text_secondary};
-  `} ${({ theme }) => theme.popup_text_secondary};
+  `}
 `;
 
 const Error = styled.p`
@@ -133,7 +133,7 @@ const TextInput = ({
   name,
   value,
   error,
-  handelChange,
+  handleChange, // Corrected prop name
   textArea,
   rows,
   columns,
@@ -173,7 +173,7 @@ const TextInput = ({
               placeholder={placeholder}
               name={name}
               value={value}
-              onChange={(e) => handelChange(e)}
+              onChange={(e) => handleChange(e)} 
             />
           </ChipWrapper>
         ) : (
@@ -187,7 +187,7 @@ const TextInput = ({
               columns={columns}
               placeholder={placeholder}
               value={value}
-              onChange={(e) => handelChange(e)}
+              onChange={(e) => handleChange(e)} 
               type={password && !showPassword ? "password" : "text"}
             />
             {password && (
@@ -216,3 +216,4 @@ const TextInput = ({
 };
 
 export default TextInput;
+

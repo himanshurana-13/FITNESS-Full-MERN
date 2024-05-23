@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 const Button = styled.div`
   border-radius: 10px;
-  color: white;
+  color: blue;
   font-size: 14px;
   cursor: pointer;
   transition: all 0.3s ease;
