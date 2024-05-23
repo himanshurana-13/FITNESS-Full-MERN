@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard";
 import Workouts from "./pages/Workouts";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
+import { RecoilRoot } from "recoil";
 
 
 const Container = styled.div`
@@ -26,6 +27,7 @@ function App() {
   // const [user, setUser] = useState(true);
   return (
   <ThemeProvider theme={lightTheme}>
+    <RecoilRoot>
   <BrowserRouter>
   <Container>
     <Navbar />
@@ -37,6 +39,7 @@ function App() {
     </Routes>
   </Container>
   </BrowserRouter>
+  </RecoilRoot>
   </ThemeProvider>
 );
 

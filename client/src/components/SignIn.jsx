@@ -31,28 +31,31 @@ const Span = styled.div`
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const setLogin = useSetRecoilState(loginAtom);
+  const [formData, setFormData] = useState({
+    name: "",
+    password: "",
+    email: "",
+  })
 
   const navigate = useNavigate();
 
   const validateInputs = () => {
-    if (!email || !password) {
+    if (!formData.email || !formData.password) {
       alert("Please fill in all fields");
       return false;
     }
     return true;
   };
 
-  const handleSignIn = async () => {
+  const handleSignUp = async () => {
     setLoading(true);
     setButtonDisabled(true);
     if (validateInputs()) {
       try {
         const response = await axios.post('http://localhost:5000/api/auth/login', {
-          username: email,
-          password: password
+          username: formData.email,
+          password: formData.password
         });
 
         if (response.data.success) {
@@ -73,6 +76,13 @@ const SignIn = () => {
     }
   };
 
+  function handleChange(e) {
+    setFormData(prev => (
+      {...prev, [e.target.name]: e.target.value}
+    ))
+    console.log(formData);
+  }
+
   return (
     <Container>
       <div>
@@ -89,20 +99,22 @@ const SignIn = () => {
         <TextInput
           label="Email Address"
           placeholder="Enter your email address"
-          value={email}
-          handleChange={(e) => setEmail(e.target.value)}
+          value={formData.email}
+          name="email"
+          handleChange={handleChange}
         />
         <TextInput
           label="Password"
           placeholder="Enter your password"
           password
-          value={password}
-          handleChange={(e) => setPassword(e.target.value)}
+          value={formData.password}
+          name="password"
+          handleChange={handleChange}
         />
         <Span>Dont have an Account? <NavLink to="/signup">Register Here</NavLink></Span>
         <Button
           text="SignIn"
-          onClick={handleSignIn}
+          onClick={handleSignUp}
           isLoading={loading}
           isDisabled={buttonDisabled}
         />

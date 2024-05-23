@@ -59,7 +59,7 @@ const SignUp = () => {
       try {
         // console.log(formData);
         const response = await axios.post('http://localhost:5000/api/auth/register', {
-          username: formData.name,
+          username: formData.email,
           password: formData.password
         });
 
@@ -75,6 +75,7 @@ const SignUp = () => {
       } catch (err) {
         // alert(err.response.data.message);'
         toast.error("Error Occurred");
+        console.log(err)
         setLoading(false);
         setButtonDisabled(false);
       }

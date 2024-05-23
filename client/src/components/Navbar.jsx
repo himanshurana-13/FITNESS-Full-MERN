@@ -299,7 +299,6 @@ const MobileMenu = styled.ul`
 
 const Navbar = () => {
   const [isOpen, setisOpen] = useState(false);
-
   return (
     <Nav>
       <NavContainer>
@@ -325,7 +324,11 @@ const Navbar = () => {
           <Navlink to="/tutorials">Tutorials</Navlink>
           <Navlink to="/blogs">Blogs</Navlink>
           <Navlink to="/contact">Contact</Navlink>
-          <TextButton as={LinkR} to="/signin">Sign In / Sign Up</TextButton>
+          
+          {
+            <TextButton as={LinkR} to="/signin">Sign In / Sign Up</TextButton>
+          }
+          
         </NavItems>
       </NavContainer>
     </Nav>
