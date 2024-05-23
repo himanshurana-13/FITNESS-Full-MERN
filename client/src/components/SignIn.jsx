@@ -3,6 +3,10 @@ import styled from "styled-components";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { loginAtom } from "../store/atoms/login";
+import toast from "react-hot-toast";
 
 const Container = styled.div`
   width: 100%;
@@ -29,6 +33,9 @@ const SignIn = () => {
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const setLogin = useSetRecoilState(loginAtom);
+
+  const navigate = useNavigate();
 
   const validateInputs = () => {
     if (!email || !password) {
@@ -47,11 +54,19 @@ const SignIn = () => {
           username: email,
           password: password
         });
-        alert("Login Successful");
-        setLoading(false);
-        setButtonDisabled(false);
+
+        if (response.data.success) {
+          setLogin(true);
+          toast.success("Logged In Successfully");
+          navigate("/");
+        }
+
+        // alert("Login Successful");
+        // setLoading(false);
+        // setButtonDisabled(false);
       } catch (err) {
-        alert(err.response.data.message);
+        // alert(err.response.data.message);
+        toast.error("Error Occurred");
         setLoading(false);
         setButtonDisabled(false);
       }
@@ -84,6 +99,7 @@ const SignIn = () => {
           value={password}
           handleChange={(e) => setPassword(e.target.value)}
         />
+        <Span>Dont have an Account? <NavLink to="/signup">Register Here</NavLink></Span>
         <Button
           text="SignIn"
           onClick={handleSignIn}

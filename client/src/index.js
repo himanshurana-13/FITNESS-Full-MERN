@@ -1,17 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {Toaster} from "react-hot-toast"
 import './index.css';
 import App from './App';
 
-
-import SignIn from '../src/components/SignIn' ;
-import SignUp from '../src/components/SignUp' ;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <App />
-    <SignIn /> 
-    <SignUp />
+    <Toaster/>
+    {/* <SignIn /> 
+    <SignUp /> */}
   </React.StrictMode>
 );
 

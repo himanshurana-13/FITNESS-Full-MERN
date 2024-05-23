@@ -3,6 +3,10 @@ import styled from "styled-components";
 import TextInput from "./TextInput";
 import Button from "./Button";
 import axios from "axios";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
+import { loginAtom } from "../store/atoms/login";
+import toast from "react-hot-toast";
 
 const Container = styled.div`
   width: 100%;
@@ -29,12 +33,19 @@ const Span = styled.div`
 const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+
+  const [formData, setFormData] = useState({
+    name: "",
+    password: "",
+    email: "",
+  })
+
+  const setLogin = useSetRecoilState(loginAtom);
+
+  const navigate = useNavigate();
 
   const validateInputs = () => {
-    if (!name || !email || !password) {
+    if (!formData.name || !formData.email || !formData.password) {
       alert("Please fill in all fields");
       return false;
     }
@@ -46,20 +57,36 @@ const SignUp = () => {
     setButtonDisabled(true);
     if (validateInputs()) {
       try {
+        // console.log(formData);
         const response = await axios.post('http://localhost:5000/api/auth/register', {
-          username: name,
-          password: password
+          username: formData.name,
+          password: formData.password
         });
-        alert("Account Created Successfully");
-        setLoading(false);
-        setButtonDisabled(false);
+
+        if (response.data.success) {
+          setLogin(true);
+          toast.success("Registered Successfully");
+          navigate("/");
+        }
+
+        // alert("Account Created Successfully");
+        // setLoading(false);
+        // setButtonDisabled(false);
       } catch (err) {
-        alert(err.response.data.message);
+        // alert(err.response.data.message);'
+        toast.error("Error Occurred");
         setLoading(false);
         setButtonDisabled(false);
       }
     }
   };
+
+  function handleChange(e) {
+    setFormData(prev => (
+      {...prev, [e.target.name]: e.target.value}
+    ))
+    console.log(formData);
+  }
 
   return (
     <Container>
@@ -77,22 +104,26 @@ const SignUp = () => {
         <TextInput
           label="Full name"
           placeholder="Enter your full name"
-          value={name}
-          handleChange={(e) => setName(e.target.value)}
+          value={formData.name}
+          name="name"
+          handleChange={handleChange}
         />
         <TextInput
           label="Email Address"
           placeholder="Enter your email address"
-          value={email}
-          handleChange={(e) => setEmail(e.target.value)}
+          name="email"
+          value={formData.email}
+          handleChange={handleChange}
         />
         <TextInput
           label="Password"
           placeholder="Enter your password"
+          name="password"
           password
-          value={password}
-          handleChange={(e) => setPassword(e.target.value)}
+          value={formData.password}
+          handleChange={handleChange}
         />
+        <Span>Already a User <NavLink to="/signin">Login Here</NavLink></Span>
         <Button
           text="SignUp"
           onClick={handleSignUp}
