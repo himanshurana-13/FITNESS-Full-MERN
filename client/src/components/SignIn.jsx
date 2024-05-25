@@ -8,12 +8,23 @@ import { useSetRecoilState } from "recoil";
 import { loginAtom } from "../store/atoms/login";
 import toast from "react-hot-toast";
 
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height to center vertically */
+`;
+
 const Container = styled.div`
   width: 100%;
   max-width: 500px;
   display: flex;
   flex-direction: column;
   gap: 36px;
+  padding: 20px; /* Optional: for some padding around the content */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: to give some shadow effect */
+  border-radius: 8px; /* Optional: to round the corners */
+  background-color: ${({ theme }) => theme.background}; /* Ensure background color matches theme */
 `;
 
 const Title = styled.div`
@@ -36,7 +47,7 @@ const SignIn = () => {
     name: "",
     password: "",
     email: "",
-  })
+  });
 
   const navigate = useNavigate();
 
@@ -48,7 +59,7 @@ const SignIn = () => {
     return true;
   };
 
-  const handleSignUp = async () => {
+  const handleSignIn = async () => {
     setLoading(true);
     setButtonDisabled(true);
     if (validateInputs()) {
@@ -63,12 +74,7 @@ const SignIn = () => {
           toast.success("Logged In Successfully");
           navigate("/");
         }
-
-        // alert("Login Successful");
-        // setLoading(false);
-        // setButtonDisabled(false);
       } catch (err) {
-        // alert(err.response.data.message);
         toast.error("Error Occurred");
         setLoading(false);
         setButtonDisabled(false);
@@ -76,53 +82,54 @@ const SignIn = () => {
     }
   };
 
-  function handleChange(e) {
+  const handleChange = (e) => {
     setFormData(prev => (
-      {...prev, [e.target.name]: e.target.value}
-    ))
+      { ...prev, [e.target.name]: e.target.value }
+    ));
     console.log(formData);
-  }
+  };
 
   return (
-    <Container>
-      <div>
-        <Title>Welcome to Fittrack 👋</Title>
-        <Span>Please login with your details here</Span>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          gap: "20px",
-          flexDirection: "column",
-        }}
-      >
-        <TextInput
-          label="Email Address"
-          placeholder="Enter your email address"
-          value={formData.email}
-          name="email"
-          handleChange={handleChange}
-        />
-        <TextInput
-          label="Password"
-          placeholder="Enter your password"
-          password
-          value={formData.password}
-          name="password"
-          handleChange={handleChange}
-        />
-        <Span>Dont have an Account? <NavLink to="/signup">Register Here</NavLink></Span>
-        <Button
-          text="SignIn"
-          onClick={handleSignUp}
-          isLoading={loading}
-          isDisabled={buttonDisabled}
-        />
-      </div>
-    </Container>
+    <Wrapper>
+      <Container>
+        <div>
+          <Title>Welcome to Fittrack 👋</Title>
+          <Span>Please login with your details here</Span>
+        </div>
+        <div
+          style={{
+            display: "flex",
+            gap: "20px",
+            flexDirection: "column",
+          }}
+        >
+          <TextInput
+            label="Email Address"
+            placeholder="Enter your email address"
+            value={formData.email}
+            name="email"
+            handleChange={handleChange}
+          />
+          <TextInput
+            label="Password"
+            placeholder="Enter your password"
+            password
+            value={formData.password}
+            name="password"
+            handleChange={handleChange}
+          />
+          <Span>Don't have an Account? <NavLink to="/signup">Register Here</NavLink></Span>
+          <Button
+            text="SignIn"
+            onClick={handleSignIn}
+            isLoading={loading}
+            isDisabled={buttonDisabled}
+          />
+        </div>
+      </Container>
+    </Wrapper>
   );
 };
 
 export default SignIn;
-
 
